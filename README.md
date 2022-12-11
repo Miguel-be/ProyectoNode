@@ -1,3 +1,4 @@
+
 - Los get no son key-sensitives por lo que se puede localizar titulo de peliculas (y otros get
 con String) tanto en mayúsculas como minúsculas.
 
@@ -14,7 +15,12 @@ Movies (gestión JWT)
 > Cualquier usuario puede hacer cualquier Get.
 > Sólo los usuarios registrados e identificados en el sistema puede hacer un Post y Edit. Por ejemplo,  el usuario miguel@miguel.com con clave "pepe".
 
-- Movies. Las peliculas aceptan una cover (imagen con la cubierta de la pelicula)
+- Movies. Las peliculas aceptan una cover (imagen con la cubierta de la pelicula). 
+
+> Recomendado: la imagen se puede subir en base 64 usando el Post "/movies/with-uri". He dejado el Post "/movies" para subir un archivo también pero no lo recomiendo.
+
+
+
 
 
 

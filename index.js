@@ -1,10 +1,12 @@
+//Requerimos dotenv para gestionar las variables de entorno
+require("dotenv").config();
+
 //Requerimos la extensión Express para poder usarla posteriormente
 const express = require('express');
 //Creamos la conexión a la base de datos
 require('./config/db');
-//Conexión DB asociada Atlas miguelizquierdohorche@gmail.com
-const DB_URL="mongodb+srv://root:J7nl4ypFRSE0GqYc@cluster0.rvf2vmw.mongodb.net/?retryWrites=true&w=majority"
-//const DB_URL = "mongodb+srv://root:D4WGIRr83c33XaZc@cluster0.g58voxl.mongodb.net/?retryWrites=true&w=majority";  --> asociada Atlas miguelizquierdohorche@hotmail.com
+//Conexión DB asociada Atlas miguelizquierdohorche@gmail.com. Está en variable de entorno o por defe
+const DB_URL= process.env.DB_URL;
 
 //Requerimos la extensión Cors para poder usarla posteriormente
 const cors = require('cors');
@@ -25,9 +27,6 @@ const server = express();
 //Requerimos path para identificar nuestra ruta
 const path=require("path");
 
-//se setean variables
-server.set("secretKey", "holamundo");
-
 //Hacemos uso de cors para poder trabajar en local
 server.use(cors());
 
@@ -40,7 +39,7 @@ require("./utils/authentication/passport.js");
 
 //Creamos gestión de sesiones
 server.use(session({
-  secret:"hola_mundo",
+  secret: process.env.SESSION_SECRET_KEY,
   resave:false,
   saveUninitialized:false,
   cookie:{
@@ -72,8 +71,9 @@ server.use((err, req, res, next) => {
   return res.status(err.status || 500).json(err.message || 'Unexpected error');
 });
 
-//Establecemos el puerto de conexión y escuchamos en el mismo
-const PORT = 3000;
+//Establecemos el puerto de conexión (cogemos variable de entorno o por defecto 3000) y 
+//escuchamos en el mismo
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Server running in http://localhost:${PORT}`);
 });

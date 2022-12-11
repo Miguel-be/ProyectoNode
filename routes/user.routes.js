@@ -73,7 +73,7 @@ router.post('/login-jwt', async (req, res, next) => {
     }
 
     user.password = null;
-    const token = getJwt(user, req.app.get('secretKey'));
+    const token = getJwt(user);
     return res.status(200).json({
         user,
         token

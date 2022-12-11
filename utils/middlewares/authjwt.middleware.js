@@ -19,7 +19,7 @@ const isAuthJWT = (req, res, next)=> {
     let payload;
 
     try {
-        payload=jwt.verify(token, req.app.get("secretKey"));        
+        payload=jwt.verify(token, process.env.JWT_SECRET_KEY);        
     } catch (error) {
         return next(error);
     }

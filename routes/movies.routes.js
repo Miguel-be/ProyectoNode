@@ -1,9 +1,10 @@
 //Establecemos los end points de Movies: get, put, delete y post.
 const express = require('express');
-const multer= require('multer');
 const Movies=require("../models/movies.js");
 const isAuthJWT=require("../utils/middlewares/authjwt.middleware.js");
 const upload=require("../utils/middlewares/files.middleware.js");
+const imagetoUri=require("image-to-uri");
+const fs=require("fs");
 const router = express.Router();
 
 //End point que recoge todas las películas
@@ -76,13 +77,35 @@ router.get("/estreno-2010", async(req,res,next)=>
 router.post("/", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
 {
     try {         
-            const file=req.file?req.file.filename:null;
-            const movieNew= new Movies({...req.body, file}) ;     
+            const cover=req.file?req.file.filename:null;
+            const movieNew= new Movies({...req.body, cover}) ;     
             //Guardamos datos en minúscula en BD para luego poder comparar fácilmente con minúsculas y no ser key senstive
             movieNew.title=movieNew.title.toLowerCase();
             movieNew.director= movieNew.director.toLowerCase();
             movieNew.genre= movieNew.genre.toLowerCase();
             const createdMovie= await movieNew.save();
+            res.status(201).json(createdMovie);
+    } catch (err) {
+        return next (err);
+    }
+})
+
+//End point para añadir una nueva pelicula. Se incluyen dos middlewares: uno para
+//verificar que el usuario está registrado + login y otro para incluir portada. En este 
+// caso se suben las imagenes en base 64
+router.post("/with-uri", [upload.single("cover")], async(req,res,next)=>
+{
+    try {     
+            debugger;    
+            const filepath= req.file?req.file.path:null;
+            const cover= imagetoUri(filepath);
+            const movieNew= new Movies({...req.body, cover}) ;     
+            //Guardamos datos en minúscula en BD para luego poder comparar fácilmente con minúsculas y no ser key senstive
+            movieNew.title=movieNew.title.toLowerCase();
+            movieNew.director= movieNew.director.toLowerCase();
+            movieNew.genre= movieNew.genre.toLowerCase();
+            const createdMovie= await movieNew.save();
+            await fs.unlinkSync(filepath);
             res.status(201).json(createdMovie);
     } catch (err) {
         return next (err);
