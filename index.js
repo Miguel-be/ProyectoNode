@@ -73,7 +73,10 @@ server.use((err, req, res, next) => {
 
 //Establecemos el puerto de conexión (cogemos variable de entorno o por defecto 3000) y 
 //escuchamos en el mismo
-const PORT = process.env.PORT;
+const PORT = process.env.PORT | 3000;
 server.listen(PORT, () => {
   console.log(`Server running in http://localhost:${PORT}`);
 });
+
+//necesario para el despliegue
+module.exports=server;
