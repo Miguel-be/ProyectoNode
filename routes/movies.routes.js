@@ -93,7 +93,7 @@ router.post("/", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
 //End point para añadir una nueva pelicula. Se incluyen dos middlewares: uno para
 //verificar que el usuario está registrado + login y otro para incluir portada. En este 
 // caso se suben las imagenes en base 64
-router.post("/with-uri", [upload.single("cover")], async(req,res,next)=>
+router.post("/with-uri", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
 {
     try {     
             debugger;    
