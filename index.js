@@ -56,6 +56,12 @@ server.use(express.static(path.join(__dirname, 'public')));
 server.use(passport.initialize());
 server.use(passport.session());
 
+//Gestión error de ruta vacia
+server.get("/",(req, res)=>{
+  res.json("Bienvenido a mi API de cines y películas");
+});
+
+
 //Hacemos uso de los archivos con los endpoints
 server.use("/user", userRoutes);
 server.use('/movies', moviesRoutes);
