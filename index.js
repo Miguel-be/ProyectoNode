@@ -33,6 +33,7 @@ const path=require("path");
 const corsOptions ={
     origin:'http://localhost:3000',
     credentials:true,            //access-control-allow-credentials:true
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionSuccessStatus:200
 }
 server.use(cors(corsOptions));
@@ -45,12 +46,16 @@ server.use(express.urlencoded({extended:false}));
 require("./utils/authentication/passport.js");
 
 //Creamos gestión de sesiones
+//incluyo para la parte de react <---
 server.use(session({
   secret: process.env.SESSION_SECRET_KEY,
   resave:false,
   saveUninitialized:false,
   cookie:{
     maxAge:600000,
+    secure: true,     
+    httpOnly: true,   
+    sameSite: 'none'  
   },
   store: MongoStore.create({
     mongoUrl:DB_URL})
