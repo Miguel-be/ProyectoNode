@@ -28,8 +28,15 @@ const server = express();
 const path=require("path");
 
 //Hacemos uso de cors para poder trabajar en local
-server.use(cors());
-
+//Lo comentamos para integración React server.use(cors());
+//*1- Añadido para integración React
+const corsOptions ={
+    origin:'http://localhost:3000',
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+server.use(cors(corsOptions));
+//*1- Hasta aquí añadido integración React
 //Permitimos poder recoger información con json y encoded
 server.use(express.json());
 server.use(express.urlencoded({extended:false}));
