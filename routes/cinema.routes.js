@@ -29,6 +29,18 @@ router.post("/", [isAuthPassport], async(req,res,next)=>
     }
 })
 
+//Definición del end point para añadir un nuevo elemento de la colección Cinema para integración React
+//Tiene el middleware que permite acceso sólo a usuarios registrados
+router.post("/free", [], async(req,res,next)=>
+{    
+    try {   const cinemaNew= new Cinemas({...req.body});   
+            const createdCinema= await cinemaNew.save();
+            res.status(201).json(createdCinema);
+    } catch (err) {
+        return next (err);
+    }
+})
+
 //Definición del end point para modificar un elemento de la colección Cinema
 //Tiene el middleware que permite editar sólo a usuarios registrados
 router.put("/edit/:id", [isAuthPassport], async(req,res,next)=>
