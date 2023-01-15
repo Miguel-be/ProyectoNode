@@ -95,8 +95,7 @@ router.post("/", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
 // caso se suben las imagenes en base 64
 router.post("/with-uri", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
 {
-    try {     
-            debugger;    
+    try {                 
             const filepath= req.file?req.file.path:null;
             const cover= imagetoUri(filepath);
             const movieNew= new Movies({...req.body, cover}) ;     
