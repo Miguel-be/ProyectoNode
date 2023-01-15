@@ -10,7 +10,7 @@ const DB_URL= process.env.DB_URL;
 
 //Requerimos la extensión Cors para poder usarla posteriormente
 //1.- Comentado proyecto react
-//const cors = require('cors');
+const cors = require('cors');
 //Gestión de errores
 const createError = require('./utils/errors/create-error.js');
 //Requerimos passport
@@ -31,13 +31,13 @@ const path=require("path");
 //Hacemos uso de cors para poder trabajar en local
 //Lo comentamos para integración React server.use(cors());
 //*1- Añadido para integración React
-//const corsOptions ={
-//    origin:true,
-//    credentials:true,            //access-control-allow-credentials:true
-//    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//    optionSuccessStatus:200
-//}
-//server.use(cors(corsOptions));
+const corsOptions ={
+    origin:true,
+    credentials:true,            //access-control-allow-credentials:true
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    optionSuccessStatus:200
+}
+server.use(cors(corsOptions));
 //*1- Hasta aquí añadido integración React
 //Permitimos poder recoger información con json y encoded
 server.use(express.json());
