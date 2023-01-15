@@ -31,7 +31,7 @@ const path=require("path");
 //Lo comentamos para integración React server.use(cors());
 //*1- Añadido para integración React
 const corsOptions ={
-    origin:'http://localhost:3000',
+    origin:true,
     credentials:true,            //access-control-allow-credentials:true
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionSuccessStatus:200
