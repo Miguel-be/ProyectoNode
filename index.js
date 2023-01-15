@@ -52,10 +52,9 @@ server.use(session({
   resave:false,
   saveUninitialized:false,
   cookie:{
-    maxAge:600000,
-    secure: true,     
+    maxAge:600000,  
     httpOnly: true,   
-    sameSite: 'none'  
+    sameSite: 'lax'  
   },
   store: MongoStore.create({
     mongoUrl:DB_URL})
