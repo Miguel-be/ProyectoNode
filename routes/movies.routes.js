@@ -111,6 +111,26 @@ router.post("/with-uri", [isAuthJWT, upload.single("cover")], async(req,res,next
     }
 })
 
+//End point creado para el proyecto de React. Sólo middleware para subir imagen. En este 
+// caso se suben las imagenes en base 64
+router.post("/with-uri-free", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
+{
+    try {                 
+            const filepath= req.file?req.file.path:null;
+            const cover= imagetoUri(filepath);
+            const movieNew= new Movies({...req.body, cover}) ;     
+            //Guardamos datos en minúscula en BD para luego poder comparar fácilmente con minúsculas y no ser key senstive
+            movieNew.title=movieNew.title.toLowerCase();
+            movieNew.director= movieNew.director.toLowerCase();
+            movieNew.genre= movieNew.genre.toLowerCase();
+            const createdMovie= await movieNew.save();
+            await fs.unlinkSync(filepath);
+            res.status(201).json(createdMovie);
+    } catch (err) {
+        return next (err);
+    }
+})
+
 //End point para editar una pelicula. Se incluye middleware para verificar que el usuario 
 //está registrado + login 
 router.put("/edit/:id", [isAuthJWT], async(req,res,next)=>
