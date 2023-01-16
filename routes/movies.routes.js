@@ -113,7 +113,7 @@ router.post("/with-uri", [isAuthJWT, upload.single("cover")], async(req,res,next
 
 //End point creado para el proyecto de React. Sólo middleware para subir imagen. En este 
 // caso se suben las imagenes en base 64
-router.post("/with-uri-free", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
+router.post("/with-uri-free", [upload.single("cover")], async(req,res,next)=>
 {
     try {                 
             const filepath= req.file?req.file.path:null;
