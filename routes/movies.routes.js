@@ -159,6 +159,7 @@ router.put("/edit/:id", [isAuthJWT], async(req,res,next)=>
 router.put("/edit-free/:id", [upload.single("cover")], async(req,res,next)=>
 {
     try {    
+            const filepath= req.file?req.file.path:null;
             const cover= imagetoUri(filepath);
             const {id}= req.params;
             const movieChanges= new Movies({...req.body, cover});
