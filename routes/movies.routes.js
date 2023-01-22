@@ -184,7 +184,7 @@ router.put("/edit-free/:id", [upload.single("cover")], async(req,res,next)=>
 //pelicula
 router.put("/edit-free-nocover/:id", [], async(req,res,next)=>
 {
-    try {                
+    try {
             const {id}= req.params;
             const movieChanges= new Movies({...req.body});
             //Guardamos datos en minúscula en BD para luego poder comparar fácilmente con minúsculas y no ser key sensitive
