@@ -59,6 +59,24 @@ router.put("/edit/:id", [isAuthPassport], async(req,res,next)=>
     }
 })
 
+//Se duplica definición del end point para modificar un elemento de la colección Cinema
+//ejercicio de React no auth
+router.put("/edit-free/:id", [], async(req,res,next)=>
+{
+    try {
+            const {id}= req.params;
+            const cinemaChanges= new Cinemas({...req.body}); 
+            cinemaChanges._id=id;  
+            const cinemaToEdit= await Cinemas.findByIdAndUpdate(id,
+                {$set:{...cinemaChanges}},
+                {new:true}
+            );
+            res.status(201).json(cinemaToEdit);           
+    } catch (err) {
+        return next (err);
+    }
+})
+
 //Definición del end point para eliminar un elemento de la colección Cinema
 //Tiene el middleware que permite borrar sólo a usuarios registrados y dentro del end point
 //además comprobamos que tengan el rol admin
@@ -73,6 +91,21 @@ router.delete("/delete/:id", [isAuthPassport], async(req,res,next)=>
           else {
              next (createError('No tienes acceso admin', 403));
                }
+    } catch (err) {        
+        return next (err);
+    }
+})
+
+//Se duplica definición del end point para eliminar un elemento de la colección Cinema
+//ejercicio React
+router.delete("/delete-free/:id", [], async(req,res,next)=>
+{
+    try {       
+            const {id}= req.params;            
+            await Cinemas.remove({"_id": id}); 
+            res.status(201).json("Elemento eliminado correctamente");
+            }
+
     } catch (err) {        
         return next (err);
     }
