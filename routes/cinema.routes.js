@@ -106,7 +106,7 @@ router.delete("/delete-free/:id", [], async(req,res,next)=>
             res.status(201).json("Elemento eliminado correctamente");
             }
 
-    } catch (err) {        
+     catch (err) {        
         return next (err);
     }
 })
