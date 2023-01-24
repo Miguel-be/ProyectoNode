@@ -10,8 +10,8 @@ const router = express.Router();
 //End point que recoge todas las películas
 router.get("/", async(req,res,next)=>
 {
-    try {
-            const resul= await Movies.find();
+    try { 
+           const resul= await Movies.find();
             res.status(200).json(resul);
         }      
      catch (err) {
