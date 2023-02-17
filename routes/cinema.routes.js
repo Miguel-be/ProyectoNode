@@ -17,6 +17,19 @@ router.get("/", async(req,res,next)=>
     }
 })
 
+//End point que recoge una película según su Id
+router.get("/id/:id", async(req,res,next)=>
+{
+    try {
+            const id= req.params.id;
+            const resul= await Cinemas.findById(id);
+            res.status(200).json(resul);
+        }      
+     catch (err) {
+        return next(err);
+    }
+})
+
 //Definición del end point para añadir un nuevo elemento de la colección Cinema
 //Tiene el middleware que permite acceso sólo a usuarios registrados
 router.post("/", [isAuthPassport], async(req,res,next)=>
