@@ -43,8 +43,8 @@ router.post("/", [isAuthPassport], async(req,res,next)=>
     }
 })
 
-//Definición del end point para añadir un nuevo elemento de la colección Cinema
-//Tiene el middleware que permite acceso sólo a usuarios registrados
+//Copia para Angular. 
+//Tiene el middleware que permite acceso sólo a usuarios registrados JWT
 router.post("/jwt", [isAuthJWT], async(req,res,next)=>
 {    
     try {   const cinemaNew= new Cinemas({...req.body});   
@@ -70,6 +70,24 @@ router.post("/free", [], async(req,res,next)=>
 //Definición del end point para modificar un elemento de la colección Cinema
 //Tiene el middleware que permite editar sólo a usuarios registrados
 router.put("/edit/:id", [isAuthPassport], async(req,res,next)=>
+{
+    try {
+            const {id}= req.params;
+            const cinemaChanges= new Cinemas({...req.body}); 
+            cinemaChanges._id=id;  
+            const cinemaToEdit= await Cinemas.findByIdAndUpdate(id,
+                {$set:{...cinemaChanges}},
+                {new:true}
+            );
+            res.status(201).json(cinemaToEdit);           
+    } catch (err) {
+        return next (err);
+    }
+})
+
+//Copia para Angular. 
+//Tiene el middleware que permite acceso sólo a usuarios registrados JWT
+router.put("/edit-jwt/:id", [isAuthJWT], async(req,res,next)=>
 {
     try {
             const {id}= req.params;
@@ -125,6 +143,21 @@ router.delete("/delete/:id", [isAuthPassport], async(req,res,next)=>
 //Se duplica definición del end point para eliminar un elemento de la colección Cinema
 //ejercicio React
 router.delete("/delete-free/:id", [], async(req,res,next)=>
+{
+    try {       
+            const {id}= req.params;            
+            await Cinemas.remove({"_id": id}); 
+            res.status(201).json("Elemento eliminado correctamente");
+            }
+
+     catch (err) {        
+        return next (err);
+    }
+})
+
+//Copia para Angular. 
+//Tiene el middleware que permite acceso sólo a usuarios registrados JWT
+router.delete("/delete-jwt/:id", [], async(req,res,next)=>
 {
     try {       
             const {id}= req.params;            
