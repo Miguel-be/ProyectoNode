@@ -1,6 +1,7 @@
 //Establecemos los end points de Cinema: get, put, delete y post.
 const express = require('express');
 const Cinemas=require("../models/cinema.js");
+const isAuthJWT=require("../utils/middlewares/authjwt.middleware.js");
 const isAuthPassport=require("../utils/middlewares/authpassport.middleware.js");
 const createError = require('../utils/errors/create-error');
 const router = express.Router();
@@ -33,6 +34,18 @@ router.get("/id/:id", async(req,res,next)=>
 //Definición del end point para añadir un nuevo elemento de la colección Cinema
 //Tiene el middleware que permite acceso sólo a usuarios registrados
 router.post("/", [isAuthPassport], async(req,res,next)=>
+{    
+    try {   const cinemaNew= new Cinemas({...req.body});   
+            const createdCinema= await cinemaNew.save();
+            res.status(201).json(createdCinema);
+    } catch (err) {
+        return next (err);
+    }
+})
+
+//Definición del end point para añadir un nuevo elemento de la colección Cinema
+//Tiene el middleware que permite acceso sólo a usuarios registrados
+router.post("/jwt", [JWT], async(req,res,next)=>
 {    
     try {   const cinemaNew= new Cinemas({...req.body});   
             const createdCinema= await cinemaNew.save();
