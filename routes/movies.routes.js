@@ -180,6 +180,32 @@ router.put("/edit-free/:id", [upload.single("cover")], async(req,res,next)=>
     }
 })
 
+//End point duplicado para editar una pelicula. Se crea para el proyecto de React se pone portada de 
+//pelicula
+router.put("/edit-cover/:id", [isAuthJWT, upload.single("cover")], async(req,res,next)=>
+{
+    try {    
+            const filepath= req.file?req.file.path:null;
+            const cover= imagetoUri(filepath);
+            const {id}= req.params;
+            const movieChanges= new Movies({...req.body, cover});
+            //Guardamos datos en minúscula en BD para luego poder comparar fácilmente con minúsculas y no ser key sensitive
+            if (movieChanges.title) {movieChanges.title=movieChanges.title.toLowerCase();}
+            if (movieChanges.director){movieChanges.director=movieChanges.director.toLowerCase(); }
+            if (movieChanges.genre){movieChanges.genre=movieChanges.genre.toLowerCase();}           
+
+            movieChanges._id=id;                        
+            const movieToEdit= await Movies.findByIdAndUpdate(id,
+                {$set:{...movieChanges}},
+                {new:true}
+            );
+            await fs.unlinkSync(filepath);
+            res.status(201).json(movieToEdit);    
+    } catch (err) {
+        return next (err);
+    }
+})
+
 //End point duplicado para editar una pelicula pero sin cover. Se crea para el proyecto de React se quita el middleware de JWT pero se pone portada de 
 //pelicula
 router.put("/edit-free-nocover/:id", [], async(req,res,next)=>
